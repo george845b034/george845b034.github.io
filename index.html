@@ -1,17 +1,526 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-Hant-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>台股國民ETF</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/earlyaccess/cwtexyen.css" rel="stylesheet">
+    <style type="text/css">
+        * {
+            font-family: ‘cwTeXYen’, sans-serif;
+            font-weight: 800;
+            font-size: 1.1rem;
+        }
+
+        body {
+            background: -webkit-linear-gradient(left, #f4d465, #1a6f60);
+            background: -o-linear-gradient(right, #f4d465, #1a6f60);
+            background: -moz-linear-gradient(right, #f4d465, #1a6f60);
+            background: linear-gradient(to right, #f4d465, #1a6f60);
+        }
+
+        h1 {
+            margin: 15px 0;
+            color: #102825;
+            text-shadow: 0px 0px 10px #fff, 0px 0px 10px #fff, 0px 0px 10px #fff, 0px 0px 10px #fff, 0px 0px 10px #fff, 0px 0px 10px #fff, 0px 0px 10px #fff;
+        }
+
+        thead tr:nth-child(1) {
+            background-color: #136247;
+            color: #fef1c8;
+        }
+
+        thead tr:nth-child(2) {
+            background-color: #1a8766;
+            color: #fde494;
+        }
+
+        tbody tr td {
+            color: #052d23;
+        }
+
+        tbody tr td:nth-child(n+6) {
+            font-weight: bold;
+        }
+
+        tbody tr:nth-child(2n+1) {
+            background-color: #fdde97;
+        }
+
+        tbody tr:nth-child(2n+2) {
+            background-color: #fef2cb;
+        }
+
+        .progress {
+            height: 22px;
+        }
+
+        tbody tr.bg-main td {
+            color: #fdde97;
+            background-color: #a16b40;
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
+
+        tbody tr.bg-master th {
+            color: #fdde97;
+            background-color: #136347;
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
+
+        .progress-bar.bg-success {
+            padding-left: 15px;
+            text-align: left;
+            font-size: 1.2rem;
+            color: #21436b !important;
+            background-color: #4debb3 !important;
+        }
+
+        .clear_a {
+            color: #fbefc5;
+            text-decoration: none;
+        }
+
+        .clear_a:hover {
+            color: #fbefc5;
+        }
+
+        .page-wrapper {
+            min-height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cart {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: #292d48;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+        }
+
+        .cart>i {
+            font-size: 25px;
+            color: white;
+        }
+
+        .cart:before {
+            content: attr(data-totalitems);
+            font-size: 12px;
+            font-weight: 600;
+            position: absolute;
+            top: -12px;
+            right: -12px;
+            background: #2bd156;
+            line-height: 24px;
+            padding: 0 5px;
+            height: 24px;
+            min-width: 24px;
+            color: white;
+            text-align: center;
+            border-radius: 24px;
+        }
+
+        .cart.shake {
+            animation: shakeCart .4s ease-in-out forwards;
+        }
+
+        .page-wrapper button .cart-item {
+            position: absolute;
+            height: 24px;
+            width: 24px;
+            top: -10px;
+            right: -10px;
+        }
+
+        .page-wrapper button .cart-item:before {
+            content: '1';
+            display: block;
+            line-height: 24px;
+            height: 24px;
+            width: 24px;
+            font-size: 12px;
+            font-weight: 600;
+            background: #2bd156;
+            color: white;
+            border-radius: 20px;
+            text-align: center;
+        }
+
+        @keyframes shakeCart {
+            25% {
+                transform: translateX(6px)
+            }
+
+            50% {
+                transform: translateX(-4px);
+            }
+
+            75% {
+                transform: translateX(2px);
+            }
+
+            100% {
+                transform: translateX(0);
+            }
+        }
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-2R3Q3D1HCT"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'G-2R3Q3D1HCT');
+    </script>
 </head>
 <body>
-讀取資料
+
+<div id="app" class="container" v-cloak>
+<!--    <h1>台股國民ETF績效榜</h1>-->
+    <div class="row">
+        <div class="col-6 btn text-start" data-bs-toggle="modal" data-bs-target="#staticBackdrop" title="ETF漲跌幅走勢">
+            <i class="bi bi-bar-chart-line-fill"></i>漲跌幅走勢圖
+        </div>
+        <div class="col-6 text-end"><small>{{snapshots[0].list[0].update_at}}</small></div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="table-responsive">
+                <table class="table w-100">
+                    <thead>
+                    <tr>
+                        <th scope="col">漲跌幅排行</th>
+                        <th scope="col">&nbsp;</th>
+                        <th scope="col">純台股原型ETF</th>
+                        <th scope="col">概念</th>
+                        <th scope="col"><a href="javascript:void(0)" @click="sortData('five_day')"
+                                           class="clear_a">五日漲跌幅<i class="bi " :class="switchSortButtonClass('five_day')"></i></a>
+                        </th>
+                        <th scope="col"><a href="javascript:void(0)" @click="sortData('one_month')"
+                                           class="clear_a">一個月漲跌幅<i class="bi " :class="switchSortButtonClass('one_month')"></i></a>
+                        </th>
+                        <th scope="col"><a href="javascript:void(0)" @click="sortData('three_month')"
+                                           class="clear_a">三個月漲跌幅<i class="bi " :class="switchSortButtonClass('three_month')"></i></a>
+                        </th>
+                        <th scope="col"><a href="javascript:void(0)" @click="sortData('half_year')"
+                                           class="clear_a">半年漲跌幅<i class="bi " :class="switchSortButtonClass('half_year')"></i></a>
+                        </th>
+                        <th scope="col"><a href="javascript:void(0)" @click="sortData('one_year')"
+                                           class="clear_a">一年漲跌幅<i class="bi " :class="switchSortButtonClass('one_year')"></i></a>
+                        </th>
+                        <th scope="col">成份比較</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <template v-for="(item, index) in sortedData" :key="item.code">
+                            <tr :class="{'bg-master': item.code == '2330' || item.code == '0'}" v-if="item.code == '0'">
+                                <th><strong>{{ index + 1 }}</strong></th>
+                                <th colspan="2">{{ item.name }}</th>
+                                <th></th>
+                                <th>{{ item.up_and_down.five_day }}</th>
+                                <th>{{ item.up_and_down.one_month }}</th>
+                                <th>{{ item.up_and_down.three_month }}</th>
+                                <th>{{ item.up_and_down.half_year }}</th>
+                                <th>{{ item.up_and_down.one_year }}</th>
+                                <th></th>
+                            </tr>
+                            <tr v-else :class="{'bg-master': item.code == '2330'}">
+                                <td><strong>{{ index + 1 }}</strong></td>
+                                <td>{{ item.code }}</td>
+                                <td :id=" item.is_tsmc == false ? 'animate_' +  item.code : null">{{ item.name }}</td>
+                                <td><div v-if="item.is_tsmc" :id="'animate_' + item.code">🍗</div></td>
+                                <td>{{ item.up_and_down.five_day }}</td>
+                                <td>{{ item.up_and_down.one_month }}</td>
+                                <td>{{ item.up_and_down.three_month }}</td>
+                                <td>{{ item.up_and_down.half_year }}</td>
+                                <td>{{ item.up_and_down.one_year }}</td>
+                                <td>
+                                    <div v-if="item.code != '2330'" class="page-wrapper">
+                                        <button type="button" class="btn btn-outline-success add-code"
+                                                :data-code="item.code"
+                                                :data-name="item.code + item.name"
+                                                :data-index="index">加入</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="cart" class="cart" data-totalitems="0">
+        <i class="bi bi-cart"></i>
+    </div>
+</div>
+
+<!-- Modal趨勢圖 -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header d-flex">
+                <h5 class="modal-title" id="staticBackdropLabel">ETF漲跌幅走勢</h5>
+                <small class="fw-light ms-2" style="font-size: small;">自行選擇比較的標的</small>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <canvas id="myChart" width="400" height="200"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal比較圖 -->
+<div class="modal fade" id="compare" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header d-flex">
+                <h5 class="modal-title flex-grow-1">ETF成份比較</h5>
+                <small class="fs-6 fw-light" id="compare_update">更新日期:</small>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-9">
+                                        <h5 class="card-title" id="compare_1"></h5>
+                                    </div>
+                                    <div class="col-3"><small class="float-end" id="compare_1_count"></small></div>
+                                </div>
+                            </div>
+                            <ul class="list-group list-group-flush" id="compare_1_ul">
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-9">
+                                        <h5 class="card-title" id="compare_2"></h5>
+                                    </div>
+                                    <div class="col-3"><small class="float-end" id="compare_2_count"></small></div>
+                                </div>
+                            </div>
+                            <ul class="list-group list-group-flush" id="compare_2_ul">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous">
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.2/dist/chart.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+
+<script>
+
+    function stringToFloat(str) {
+
+        // 使用正規表達式取出百分比數字部分
+        const match = str.match(/([-+]?\d+\.\d+)%/);
+
+        if (match) {
+            // 轉換成浮點數
+            return parseFloat(match[1]);
+        }
+
+        // 若無法取出數字，回傳 NaN
+        return NaN;
+    }
+
+    function randomRgba() {
+        const r = Math.floor(Math.random() * 256);
+        const g = Math.floor(Math.random() * 256);
+        const b = Math.floor(Math.random() * 256);
+        return `rgba(${r}, ${g}, ${b}, 1)`;
+    }
+
+
+    function processData(data) {
+        const chartData = data.map(function(item, index){
+            return {
+                "label": item.name,
+                "hidden": (index > 5) ? 1 : 0,
+                "data": [
+                    stringToFloat(item.up_and_down.five_day),
+                    stringToFloat(item.up_and_down.one_month),
+                    stringToFloat(item.up_and_down.three_month),
+                    stringToFloat(item.up_and_down.half_year),
+                    stringToFloat(item.up_and_down.one_year),
+                ],
+                "borderColor": randomRgba(),
+                "borderWidth": 1,
+            };
+        });
+
+        return chartData;
+    }
+
+    function startDom(data, original) {
+        console.log('startDom');
+        var compare = [];
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['五日', '一個月', '三個月', '半年', '一年'],
+                    datasets: data
+        },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+        // 點擊加入
+        $('.add-code').on('click', function () {
+            //只留兩個代號
+            if (compare.length >= 2) {
+                compare.shift();
+            }
+            //加入新的代號
+            compare.push({
+                "code": $(this).data("code"),
+                "name": $(this).data("name"),
+                "index": $(this).data("index"),
+            });
+            //更新購物車的數量
+            $("#cart").attr("data-totalitems", compare.length);
+            $("#cart").find("i").removeClass("bi-cart").addClass("bi-cart-check");
+
+            //丟到購物車的動畫
+            var origin = $("#animate_" + $(this).data("code"));
+            var item = origin.clone();
+            //先定位
+            $(item).css({
+                position: "absolute",
+                top: origin.offset().top,
+                left: origin.offset().left
+            });
+            $('body').append(item);
+            var cart_position = $('#cart').offset();
+            item.animate({
+                top: cart_position.top - 60,
+                left: cart_position.left
+            }, 1000, "linear", function () {
+                item.animate({
+                    top: cart_position.top
+                }, 300, "linear", function () {
+                    $(this).remove();
+                });
+            });
+        });
+        //點擊購物車
+        $('#cart').on('click', function () {
+            //判斷有無兩個比較代號
+            if (compare.length < 2) {
+                alert("請加入兩個代號一起比較");
+                return;
+            }
+
+            const myModal = new bootstrap.Modal(document.getElementById('compare'));
+
+            $("#compare_update").html(original[compare[0]["index"]]["list"][0]['update_at']);
+            //更換標題
+            if (compare[0] != undefined) {
+                $("#compare_1").html(compare[0]["name"]);
+            }
+            if (compare[1] != undefined) {
+                $("#compare_2").html(compare[1]["name"]);
+            }
+            const ul1 = $("#compare_1_ul");
+            ul1.html("");
+            let li1 = "";
+            let total_1 = 0;
+            let count_1 = 0;
+
+            const ul2 = $("#compare_2_ul");
+            ul2.html("");
+            let li2 = "";
+            let total_2 = 0;
+            let count_2 = 0;
+
+            if(Array.isArray(original[compare[0]["index"]]["list"]) && Array.isArray(original[compare[1]["index"]]["list"])) {
+                const arr1 = original[compare[0]["index"]]["list"][0]['data'];
+                const arr2 = original[compare[1]["index"]]["list"][0]['data'];
+                total_1 = arr1.length;
+                total_2 = arr2.length;
+
+                //找出相同的名稱
+                const results = Array.from(new Set(
+                    arr1.filter(([key, value]) => {
+                        return arr2.some(([otherKey, otherValue]) => {
+                            return key === otherKey;
+                        });
+                    }).map(([key, value]) => {
+                        return key;
+                    })
+                ));
+
+                arr1.forEach(function (element) {
+                    let bgClass1 = "";
+                    if(results.includes(element[0])){
+                        bgClass1 = "bg-success text-white";
+                        count_1++;
+                    }
+                    li1 += "<li class='list-group-item " + bgClass1 + "'>" + element[0] + "<small class='fs-6 float-end'>" + element[1] + "%</small></li>";
+                });
+
+                arr2.forEach(function (element) {
+                    let bgClass2 = "";
+                    if(results.includes(element[0])){
+                        bgClass2 = "bg-success text-white";
+                        count_2++;
+                    }
+                    li2 += "<li class='list-group-item " + bgClass2 + "'>" + element[0] + "<small class='fs-6 float-end'>" + element[1] + "%</small></li>";
+                });
+            }
+            ul1.html(li1);
+            ul2.html(li2);
+
+            $("#compare_1_count").html(count_1 + "/" + total_1 + "檔");
+            $("#compare_2_count").html(count_2 + "/" + total_2 + "檔");
+            myModal.show();
+        });
+    }
+
+</script>
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
     import { getDatabase, ref, child, get } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-database.js";
+    import { createApp } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js'
 
     const firebaseConfig = {
         databaseURL: "https://stock-9f604-default-rtdb.firebaseio.com",
@@ -21,15 +530,71 @@
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
 
-    get(child(dbRef, `stock/base`)).then((snapshot) => {
-        if (snapshot.exists()) {
-            console.log(snapshot.val());
-        } else {
-            console.log("No data available");
-        }
+    const dbRef = ref(database);
+
+    let dataPromise = new Promise((resolve, reject) => {
+        get(child(dbRef, `stock/base`)).then((snapshot) => {
+            if (snapshot.exists()) {
+                resolve(snapshot.val());
+                console.log(snapshot.val());
+            } else {
+                reject("No data available");
+            }
+        }).catch((error) => {
+            reject(error);
+        });
+    });
+
+    dataPromise.then((data) => {
+        createApp({
+            data() {
+                return {
+                    sortAsc: false, // 記錄目前的排序方式是升序還是降序
+                    sortKey: "five_day", // 記錄目前使用哪個鍵值進行排序
+                    snapshots: data
+                }
+            },
+            computed: {
+                sortedData() {
+                    // 依據 sortAsc 和 sortKey 進行排序
+                    return this.snapshots.sort((a, b) => {
+                        const aVal = parseFloat(a.up_and_down[this.sortKey]);
+                        const bVal = parseFloat(b.up_and_down[this.sortKey]);
+                        if (this.sortAsc) {
+                            return aVal - bVal;
+                        } else {
+                            return bVal - aVal;
+                        }
+                    });
+                },
+            },
+            mounted(){
+                $(document).ready(() => {
+                    const chartData = processData(this.snapshots);
+                    startDom(chartData, this.snapshots);
+                });
+            },
+            methods: {
+                sortData(key) {
+                    // 切換排序方式以及鍵值
+                    this.sortAsc = !this.sortAsc;
+                    this.sortKey = key;
+                },
+                switchSortButtonClass(key) {
+                    
+                    if(this.sortKey == key) {
+                        return !this.sortAsc ? 'bi-chevron-up' : 'bi-chevron-down';
+                    }else{
+                        return '';
+                    }
+                }
+            }
+        }).mount('#app');
     }).catch((error) => {
         console.error(error);
     });
+
+
 </script>
 </body>
 </html>
